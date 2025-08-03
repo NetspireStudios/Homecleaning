@@ -419,7 +419,111 @@ p {
     overflow: hidden;
 }
 
-/* All hero background elements removed as requested */
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, rgba(135, 206, 235, 0.3) 0%, transparent 50%),
+        linear-gradient(-45deg, rgba(70, 130, 180, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(25, 25, 112, 0.2) 0%, transparent 70%);
+    z-index: -2;
+    animation: backgroundShift 8s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+    0%, 100% {
+        background-position: 0% 50%, 100% 50%, 50% 0%;
+        background-size: 150% 150%, 200% 200%, 180% 180%;
+    }
+    25% {
+        background-position: 50% 0%, 0% 100%, 100% 50%;
+        background-size: 180% 180%, 150% 150%, 200% 200%;
+    }
+    50% {
+        background-position: 100% 50%, 0% 50%, 50% 100%;
+        background-size: 200% 200%, 180% 180%, 150% 150%;
+    }
+    75% {
+        background-position: 50% 100%, 100% 0%, 0% 50%;
+        background-size: 150% 150%, 200% 200%, 180% 180%;
+    }
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+.hero-video.loaded {
+    opacity: 0.8;
+}
+
+.hero-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(135, 206, 235, 0.4) 0%, transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(135, 206, 235, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 60% 80%, rgba(70, 130, 180, 0.3) 0%, transparent 50%),
+        linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+    z-index: -1;
+    animation: floatingBubbles 12s ease-in-out infinite;
+}
+
+@keyframes floatingBubbles {
+    0%, 100% {
+        background-position: 20% 50%, 80% 20%, 60% 80%, 0% 0%;
+        background-size: 300px 300px, 250px 250px, 200px 200px, 100% 100%;
+    }
+    33% {
+        background-position: 30% 30%, 70% 60%, 40% 20%, 0% 0%;
+        background-size: 350px 350px, 200px 200px, 280px 280px, 100% 100%;
+    }
+    66% {
+        background-position: 80% 70%, 40% 80%, 80% 40%, 0% 0%;
+        background-size: 200px 200px, 300px 300px, 250px 250px, 100% 100%;
+    }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(135, 206, 235, 0.7) 0%, 
+        rgba(70, 130, 180, 0.6) 50%,
+        rgba(25, 25, 112, 0.7) 100%);
+    z-index: 0;
+}
 
 .hero-content {
     display: grid;
@@ -2997,56 +3101,181 @@ p {
         min-height: 48px;
     }
 
-    /* Mobile background elements removed */
+    /* Mobile - Hide video background and use static background */
+    .hero-video {
+        display: none !important; /* Hide video completely on mobile */
+    }
+
+    .hero-background-image {
+        background: 
+            linear-gradient(135deg, 
+                rgba(135, 206, 235, 0.8) 0%, 
+                rgba(70, 130, 180, 0.7) 50%,
+                rgba(25, 25, 112, 0.8) 100%
+            ),
+            url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        animation: none; /* Remove animations on mobile for better performance */
+    }
+
+    .hero-overlay {
+        background: linear-gradient(135deg, 
+            rgba(135, 206, 235, 0.4) 0%, 
+            rgba(70, 130, 180, 0.5) 50%,
+            rgba(25, 25, 112, 0.4) 100%);
+    }
 }
 
 /* Tablet and Mobile Common Styles (max-width: 768px) */
 @media screen and (max-width: 768px) {
-    /* Promotional Banner Mobile */
+    /* Mobile Banner Optimization */
     .banner-content {
-        padding: 10px 0;
-        gap: 10px;
+        padding: 8px 0;
+        gap: 8px;
         flex-direction: column;
         text-align: center;
     }
     
     .banner-text {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         min-width: auto;
+        line-height: 1.3;
     }
     
     .banner-cta {
-        font-size: 0.85rem;
-        padding: 6px 16px;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        min-height: 40px;
     }
     
     .promo-banner {
-        position: relative; /* On mobile, make it not fixed to save space */
+        position: static; /* On mobile, make it part of normal flow */
+        margin: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
     body {
-        padding-top: 80px; /* Reduce padding on mobile since banner is not fixed */
+        padding-top: 0; /* Remove all extra padding on mobile */
+        margin: 0;
     }
     
     .navbar {
-        top: 0; /* Reset navbar to top on mobile */
+        position: static; /* Make navbar part of normal flow on mobile */
+        top: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-toggle {
+        display: flex !important;
+        z-index: 1002;
     }
 
     .nav-menu {
         position: fixed;
         left: -100%;
-        top: 70px;
+        top: 60px; /* Account for banner height */
         flex-direction: column;
         background-color: var(--white);
         width: 100%;
         text-align: center;
-        transition: var(--transition);
-        box-shadow: var(--shadow);
-        padding: 2rem 0;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 1.5rem 0;
+        z-index: 1001;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        border-top: 3px solid var(--primary-color);
     }
 
     .nav-menu.active {
         left: 0;
+    }
+
+    /* Mobile Navigation Improvements */
+    .nav-item {
+        margin: 0;
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 16px 20px;
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+
+    .nav-link:hover,
+    .nav-link.active,
+    .nav-link:focus {
+        background: var(--primary-color);
+        color: var(--white);
+        transform: none;
+    }
+
+    /* Mobile Dropdown Menu */
+    .dropdown-menu {
+        position: static;
+        opacity: 0;
+        visibility: hidden;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: var(--light-grey);
+        margin-top: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        border-left: 3px solid var(--primary-color);
+    }
+
+    .dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        max-height: 500px;
+        padding: 1rem 0;
+    }
+
+    .dropdown-link {
+        padding: 16px 40px;
+        border-bottom: 1px solid var(--border-color);
+        background: transparent;
+        color: var(--text-color);
+        font-size: 0.95rem;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-link:hover,
+    .dropdown-link:focus {
+        background: rgba(135, 206, 235, 0.1);
+        color: var(--secondary-color);
+        font-weight: 600;
+    }
+
+    .btn-book-nav {
+        background: var(--primary-color) !important;
+        color: var(--secondary-color) !important;
+        padding: 12px 24px !important;
+        border-radius: 25px !important;
+        font-weight: 600 !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 8px auto !important;
+        max-width: 200px !important;
     }
 
     .nav-toggle {

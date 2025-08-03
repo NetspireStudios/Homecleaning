@@ -651,7 +651,37 @@ document.addEventListener('DOMContentLoaded', function() {
         performSearch();
     }
 
-    // Hero video loading code removed as background elements were removed
+    // Hero Video Loading
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+        // Try to play the video immediately
+        heroVideo.play().catch(e => {
+            console.log('Video autoplay failed:', e);
+        });
+
+        // Multiple event listeners for better compatibility
+        heroVideo.addEventListener('loadeddata', function() {
+            console.log('Video loaded successfully');
+            this.classList.add('loaded');
+        });
+
+        heroVideo.addEventListener('canplay', function() {
+            console.log('Video can play');
+            this.classList.add('loaded');
+        });
+
+        heroVideo.addEventListener('error', function(e) {
+            console.log('Video error:', e);
+        });
+
+        // Aggressive fallback: Show video effect after short delay
+        setTimeout(() => {
+            if (heroVideo) {
+                heroVideo.classList.add('loaded');
+                console.log('Video forced to show via timeout');
+            }
+        }, 1000);
+    }
 });
 
 // Preloader (optional)
