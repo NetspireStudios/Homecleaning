@@ -1,5 +1,5 @@
 /**
- * CleanSpace Service Worker
+ * Pristine & Clean Service Worker
  * Provides offline functionality and caching for better performance
  */
 

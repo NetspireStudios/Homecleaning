@@ -1,7 +1,7 @@
-# CleanSpace Professional Cleaning Services Website
+# Pristine & Clean Professional Cleaning Services Website
 
 ## 🌟 Overview
-A modern, responsive website for CleanSpace Professional Cleaning Services featuring mobile-first design, comprehensive SEO optimization, and smooth user experience.
+A modern, responsive website for Pristine & Clean Professional Cleaning Services featuring mobile-first design, comprehensive SEO optimization, and smooth user experience.
 
 ## 🚀 Features
 
@@ -189,18 +189,18 @@ python -m http.server 8000
 
 ## 🤝 Contributing
 
-This is a production website for CleanSpace Cleaning Services. For updates or modifications, please contact the development team.
+This is a production website for Pristine & Clean Cleaning Services. For updates or modifications, please contact the development team.
 
 ## 📞 Support
 
 For website-related issues or updates:
-- Email: info@cleanspace.com
+- Email: info@pristineandclean.com
 - Phone: +1-555-CLEAN-01
 
 ## 📄 License
 
-© 2024 CleanSpace Cleaning Services. All rights reserved.
+© 2024 Pristine & Clean Cleaning Services. All rights reserved.
 
 ---
 
-**Built with ❤️ for CleanSpace Professional Cleaning Services**
+**Built with ❤️ for Pristine & Clean Professional Cleaning Services**

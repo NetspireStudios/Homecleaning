@@ -1,6 +1,6 @@
 /**
- * CleanSpace Website - Interactive Features & Mobile Optimization
- * Author: CleanSpace Development Team
+ * Pristine & Clean Website - Interactive Features & Mobile Optimization
+ * Author: Pristine & Clean Development Team
  * Version: 2.0
  * Last Updated: 2024-12-19
  * 
@@ -651,36 +651,150 @@ document.addEventListener('DOMContentLoaded', function() {
         performSearch();
     }
 
-    // Hero Video Loading
-    const heroVideo = document.querySelector('.hero-video');
-    if (heroVideo) {
-        // Try to play the video immediately
-        heroVideo.play().catch(e => {
-            console.log('Video autoplay failed:', e);
-        });
+    // Hero Slider Functionality
+    const slides = document.querySelectorAll('.slide');
+    const navDots = document.querySelectorAll('.nav-dot');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    
+    let currentSlide = 0;
+    const slideInterval = 5000; // 5 seconds
+    let autoSlideTimer;
 
-        // Multiple event listeners for better compatibility
-        heroVideo.addEventListener('loadeddata', function() {
-            console.log('Video loaded successfully');
-            this.classList.add('loaded');
-        });
+    // Function to show a specific slide
+    function showSlide(index) {
+        // Remove active class from all slides and dots
+        slides.forEach(slide => slide.classList.remove('active'));
+        navDots.forEach(dot => dot.classList.remove('active'));
+        
+        // Add active class to current slide and dot
+        slides[index].classList.add('active');
+        navDots[index].classList.add('active');
+        
+        currentSlide = index;
+    }
 
-        heroVideo.addEventListener('canplay', function() {
-            console.log('Video can play');
-            this.classList.add('loaded');
-        });
+    // Function to go to next slide
+    function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+    }
 
-        heroVideo.addEventListener('error', function(e) {
-            console.log('Video error:', e);
-        });
+    // Function to go to previous slide
+    function prevSlide() {
+        const prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+    }
 
-        // Aggressive fallback: Show video effect after short delay
+    // Auto-slide functionality
+    function startAutoSlide() {
+        stopAutoSlide(); // Clear any existing timer first
+        autoSlideTimer = setInterval(nextSlide, slideInterval);
+    }
+
+    function stopAutoSlide() {
+        if (autoSlideTimer) {
+            clearInterval(autoSlideTimer);
+            autoSlideTimer = null;
+        }
+    }
+
+    function resetAutoSlide() {
+        stopAutoSlide();
         setTimeout(() => {
-            if (heroVideo) {
-                heroVideo.classList.add('loaded');
-                console.log('Video forced to show via timeout');
+            startAutoSlide();
+        }, 100); // Small delay to prevent timing conflicts
+    }
+
+    // Initialize slider if slides exist
+    if (slides.length > 0) {
+        // Show first slide
+        showSlide(0);
+        
+        // Start auto-slide
+        startAutoSlide();
+
+        // Add click event listeners to navigation dots
+        navDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                resetAutoSlide(); // Reset timer properly
+            });
+        });
+
+        // Add click event listeners to arrow buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetAutoSlide(); // Reset timer properly
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetAutoSlide(); // Reset timer properly
+            });
+        }
+
+        // Pause auto-slide on hover
+        const sliderContainer = document.querySelector('.hero-slider');
+        if (sliderContainer) {
+            sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+            sliderContainer.addEventListener('mouseleave', startAutoSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                resetAutoSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                resetAutoSlide();
             }
-        }, 1000);
+        });
+    }
+
+    // Theme Switcher Functionality
+    const themeSwitcher = document.getElementById('theme-switcher');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to 'green'
+    const savedTheme = localStorage.getItem('theme') || 'green';
+    
+    // Apply saved theme on page load
+    if (savedTheme === 'blue') {
+        body.setAttribute('data-theme', 'blue');
+    }
+    
+    // Theme switcher click handler
+    if (themeSwitcher) {
+        themeSwitcher.addEventListener('click', function() {
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'blue') {
+                // Switch to green theme
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'green');
+                
+                // Visual feedback
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            } else {
+                // Switch to blue theme
+                body.setAttribute('data-theme', 'blue');
+                localStorage.setItem('theme', 'blue');
+                
+                // Visual feedback
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            }
+        });
     }
 });
 
