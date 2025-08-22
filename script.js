@@ -29,20 +29,22 @@ if ('serviceWorker' in navigator) {
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Enhanced Mobile Menu Toggle with Accessibility
+    // Enhanced Mobile Menu Toggle with Backdrop
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
+    const navBackdrop = document.getElementById('nav-backdrop');
     
-    if (mobileMenu && navMenu) {
+    if (mobileMenu && navMenu && navBackdrop) {
         // Set initial ARIA state
         mobileMenu.setAttribute('aria-expanded', 'false');
         navMenu.setAttribute('aria-hidden', 'true');
         
-        mobileMenu.addEventListener('click', function() {
+        function toggleMenu() {
             const isExpanded = mobileMenu.classList.contains('active');
             
             mobileMenu.classList.toggle('active');
             navMenu.classList.toggle('active');
+            navBackdrop.classList.toggle('active');
             
             // Update ARIA attributes
             mobileMenu.setAttribute('aria-expanded', !isExpanded);
@@ -54,27 +56,34 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 document.body.style.overflow = '';
             }
-        });
+        }
+        
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            navMenu.classList.remove('active');
+            navBackdrop.classList.remove('active');
+            mobileMenu.setAttribute('aria-expanded', 'false');
+            navMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+        
+        // Toggle menu on burger click
+        mobileMenu.addEventListener('click', toggleMenu);
+        
+        // Close menu on backdrop click
+        navBackdrop.addEventListener('click', closeMenu);
         
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
-            if (!mobileMenu.contains(event.target) && !navMenu.contains(event.target)) {
-                mobileMenu.classList.remove('active');
-                navMenu.classList.remove('active');
-                mobileMenu.setAttribute('aria-expanded', 'false');
-                navMenu.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
+            if (!mobileMenu.contains(event.target) && !navMenu.contains(event.target) && !navBackdrop.contains(event.target)) {
+                closeMenu();
             }
         });
         
         // Close mobile menu on escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape' && navMenu.classList.contains('active')) {
-                mobileMenu.classList.remove('active');
-                navMenu.classList.remove('active');
-                mobileMenu.setAttribute('aria-expanded', 'false');
-                navMenu.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
+                closeMenu();
                 mobileMenu.focus();
             }
         });
@@ -651,151 +660,63 @@ document.addEventListener('DOMContentLoaded', function() {
         performSearch();
     }
 
-    // Hero Slider Functionality
-    const slides = document.querySelectorAll('.slide');
-    const navDots = document.querySelectorAll('.nav-dot');
-    const prevBtn = document.getElementById('prevSlide');
-    const nextBtn = document.getElementById('nextSlide');
+    // Enhanced Navbar Scroll Behavior
+    let lastScrollTop = 0;
+    let scrollTimer = null;
+    let isScrolling = false;
+    const navbar = document.querySelector('.navbar');
     
-    let currentSlide = 0;
-    const slideInterval = 5000; // 5 seconds
-    let autoSlideTimer;
-
-    // Function to show a specific slide
-    function showSlide(index) {
-        // Remove active class from all slides and dots
-        slides.forEach(slide => slide.classList.remove('active'));
-        navDots.forEach(dot => dot.classList.remove('active'));
+    if (navbar) {
+        // Initially show navbar
+        navbar.classList.add('navbar-visible');
         
-        // Add active class to current slide and dot
-        slides[index].classList.add('active');
-        navDots[index].classList.add('active');
-        
-        currentSlide = index;
-    }
-
-    // Function to go to next slide
-    function nextSlide() {
-        const next = (currentSlide + 1) % slides.length;
-        showSlide(next);
-    }
-
-    // Function to go to previous slide
-    function prevSlide() {
-        const prev = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(prev);
-    }
-
-    // Auto-slide functionality
-    function startAutoSlide() {
-        stopAutoSlide(); // Clear any existing timer first
-        autoSlideTimer = setInterval(nextSlide, slideInterval);
-    }
-
-    function stopAutoSlide() {
-        if (autoSlideTimer) {
-            clearInterval(autoSlideTimer);
-            autoSlideTimer = null;
-        }
-    }
-
-    function resetAutoSlide() {
-        stopAutoSlide();
-        setTimeout(() => {
-            startAutoSlide();
-        }, 100); // Small delay to prevent timing conflicts
-    }
-
-    // Initialize slider if slides exist
-    if (slides.length > 0) {
-        // Show first slide
-        showSlide(0);
-        
-        // Start auto-slide
-        startAutoSlide();
-
-        // Add click event listeners to navigation dots
-        navDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-                resetAutoSlide(); // Reset timer properly
-            });
-        });
-
-        // Add click event listeners to arrow buttons
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                resetAutoSlide(); // Reset timer properly
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                resetAutoSlide(); // Reset timer properly
-            });
-        }
-
-        // Pause auto-slide on hover
-        const sliderContainer = document.querySelector('.hero-slider');
-        if (sliderContainer) {
-            sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-            sliderContainer.addEventListener('mouseleave', startAutoSlide);
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-                resetAutoSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-                resetAutoSlide();
-            }
-        });
-    }
-
-    // Theme Switcher Functionality
-    const themeSwitcher = document.getElementById('theme-switcher');
-    const body = document.body;
-    
-    // Check for saved theme preference or default to 'green'
-    const savedTheme = localStorage.getItem('theme') || 'green';
-    
-    // Apply saved theme on page load
-    if (savedTheme === 'blue') {
-        body.setAttribute('data-theme', 'blue');
-    }
-    
-    // Theme switcher click handler
-    if (themeSwitcher) {
-        themeSwitcher.addEventListener('click', function() {
-            const currentTheme = body.getAttribute('data-theme');
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollDifference = Math.abs(currentScroll - lastScrollTop);
             
-            if (currentTheme === 'blue') {
-                // Switch to green theme
-                body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'green');
-                
-                // Visual feedback
-                this.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            } else {
-                // Switch to blue theme
-                body.setAttribute('data-theme', 'blue');
-                localStorage.setItem('theme', 'blue');
-                
-                // Visual feedback
-                this.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
+            // Clear the previous timer
+            if (scrollTimer) {
+                clearTimeout(scrollTimer);
             }
-        });
+            
+            // Mark as scrolling
+            isScrolling = true;
+            
+            // Always show navbar at the very top
+            if (currentScroll <= 50) {
+                navbar.classList.remove('navbar-hidden');
+                navbar.classList.add('navbar-visible');
+            }
+            // Only hide/show if significant scroll movement (prevents jittery behavior)
+            else if (scrollDifference > 5) {
+                if (currentScroll > lastScrollTop && currentScroll > 150) {
+                    // Scrolling down and past threshold - hide navbar
+                    navbar.classList.remove('navbar-visible');
+                    navbar.classList.add('navbar-hidden');
+                } else if (currentScroll < lastScrollTop) {
+                    // Scrolling up - show navbar
+                    navbar.classList.remove('navbar-hidden');
+                    navbar.classList.add('navbar-visible');
+                }
+            }
+            
+            // Show navbar when user stops scrolling (but not at very top)
+            scrollTimer = setTimeout(function() {
+                isScrolling = false;
+                if (currentScroll > 50) {
+                    navbar.classList.remove('navbar-hidden');
+                    navbar.classList.add('navbar-visible');
+                }
+            }, 300); // Increased delay for better UX
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        }, { passive: true });
     }
+
+    // Hero Video Background - No additional JavaScript needed
+    // Video will auto-play due to HTML attributes
+
+
 });
 
 // Preloader (optional)
