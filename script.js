@@ -29,7 +29,7 @@ if ('serviceWorker' in navigator) {
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Enhanced Mobile Menu Toggle with Backdrop
+    // Perfect Mobile Menu Toggle
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
     const navBackdrop = document.getElementById('nav-backdrop');
@@ -65,6 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.setAttribute('aria-expanded', 'false');
             navMenu.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
+            
+            // Close any open dropdowns
+            const activeDropdowns = document.querySelectorAll('.nav-item.dropdown.active');
+            activeDropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
         }
         
         // Toggle menu on burger click
@@ -73,10 +79,44 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close menu on backdrop click
         navBackdrop.addEventListener('click', closeMenu);
         
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!mobileMenu.contains(event.target) && !navMenu.contains(event.target) && !navBackdrop.contains(event.target)) {
+        // Close menu when clicking on the close button (pseudo-element)
+        navMenu.addEventListener('click', function(event) {
+            const rect = navMenu.getBoundingClientRect();
+            const closeButtonArea = {
+                x: rect.right - 50,
+                y: rect.top + 10,
+                width: 40,
+                height: 40
+            };
+            
+            if (event.clientX >= closeButtonArea.x && 
+                event.clientX <= closeButtonArea.x + closeButtonArea.width &&
+                event.clientY >= closeButtonArea.y && 
+                event.clientY <= closeButtonArea.y + closeButtonArea.height) {
                 closeMenu();
+            }
+        });
+        
+        // Handle mobile dropdown functionality
+        const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
+        dropdownItems.forEach(item => {
+            const dropdownLink = item.querySelector('.nav-link');
+            const dropdownMenu = item.querySelector('.dropdown-menu');
+            
+            if (dropdownLink && dropdownMenu) {
+                dropdownLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Close other dropdowns
+                    dropdownItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    item.classList.toggle('active');
+                });
             }
         });
         
