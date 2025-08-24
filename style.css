@@ -318,9 +318,9 @@ p {
 
 /* Logo styling */
 .logo-img {
-    height: 55px;
+    height: 90px;
     width: auto;
-    max-width: 250px;
+    max-width: 400px;
     object-fit: contain;
     transition: transform 0.3s ease;
     display: block;
@@ -2872,8 +2872,8 @@ p {
 .social-links a {
     width: 40px;
     height: 40px;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
+    background-color: var(--white);
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2956,8 +2956,8 @@ p {
     
     /* Mobile logo sizing */
     .logo-img {
-        height: 42px;
-        max-width: 180px;
+        height: 70px;
+        max-width: 280px;
     }
     
 
@@ -5205,5 +5205,741 @@ img {
     .container {
         max-width: none;
         padding: 0;
+    }
+}
+
+/* ===== 15. Service Features Carousel ===== */
+
+/* Carousel container for service features */
+.features-carousel-container,
+.benefits-carousel-container,
+.perfect-for-carousel-container,
+.process-carousel-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: 2rem 0;
+}
+
+/* Carousel wrapper - contains all slides */
+.features-carousel,
+.benefits-carousel,
+.perfect-for-carousel,
+.process-carousel {
+    display: flex;
+    animation: infiniteSlide 20s linear infinite;
+    width: calc(200%); /* Double width to accommodate duplicate items */
+}
+
+/* Individual carousel items */
+.carousel-item {
+    flex: 0 0 25%; /* Show 4 items at once on desktop */
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* Feature/benefit item styling within carousel */
+.carousel-item .feature-item,
+.carousel-item .benefit-item,
+.carousel-item .perfect-for-item,
+.carousel-item .process-step {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.carousel-item .feature-item:hover,
+.carousel-item .benefit-item:hover,
+.carousel-item .perfect-for-item:hover,
+.carousel-item .process-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon styling in carousel */
+.carousel-item .feature-item i,
+.carousel-item .benefit-item i,
+.carousel-item .perfect-for-item i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Process step number styling */
+.carousel-item .process-step .step-number {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Title styling in carousel */
+.carousel-item h4 {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+/* Description styling in carousel */
+.carousel-item p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Carousel animation */
+@keyframes infiniteSlide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Move by half width since we doubled the content */
+    }
+}
+
+/* Pause animation on hover */
+.features-carousel-container:hover .features-carousel,
+.benefits-carousel-container:hover .benefits-carousel,
+.perfect-for-carousel-container:hover .perfect-for-carousel,
+.process-carousel-container:hover .process-carousel {
+    animation-play-state: paused;
+}
+
+/* Mobile responsiveness for carousel - DISABLE CAROUSELS ON MOBILE */
+@media screen and (max-width: 768px) {
+    /* Disable carousel animation on mobile */
+    .features-carousel,
+    .benefits-carousel,
+    .perfect-for-carousel,
+    .process-carousel {
+        animation: none !important;
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .carousel-item {
+        flex: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    
+    .carousel-item .feature-item,
+    .carousel-item .benefit-item,
+    .carousel-item .perfect-for-item,
+    .carousel-item .process-step {
+        height: auto !important;
+        padding: 2rem !important;
+        margin-bottom: 1.5rem !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    
+    .carousel-item .feature-item i,
+    .carousel-item .benefit-item i,
+    .carousel-item .perfect-for-item i {
+        font-size: 2.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .carousel-item h4 {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+    
+    .carousel-item p {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Hide duplicate carousel items on mobile */
+    .carousel-item:nth-child(n+5) {
+        display: none !important;
+    }
+    
+    /* Ensure carousel containers don't overflow */
+    .features-carousel-container,
+    .benefits-carousel-container,
+    .perfect-for-carousel-container,
+    .process-carousel-container {
+        overflow: visible !important;
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Ensure carousel items are properly displayed on small mobile */
+    .carousel-item .feature-item,
+    .carousel-item .benefit-item,
+    .carousel-item .perfect-for-item,
+    .carousel-item .process-step {
+        padding: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .carousel-item .feature-item i,
+    .carousel-item .benefit-item i,
+    .carousel-item .perfect-for-item i {
+        font-size: 2rem !important;
+    }
+    
+    .carousel-item h4 {
+        font-size: 1.2rem !important;
+    }
+    
+    .carousel-item p {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* ===== RIGHT-SIDE MOBILE MENU ===== */
+@media screen and (max-width: 768px) {
+    /* Right-side sliding menu */
+    .nav-menu {
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        background: var(--white) !important;
+        border-radius: 0 !important;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1) !important;
+        padding: 80px 0 20px 0 !important;
+        transform: translateX(100%) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: transform 0.3s ease !important;
+        z-index: 9999 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+        border: none !important;
+        border-left: 1px solid #e9ecef !important;
+        backdrop-filter: none !important;
+        overflow-y: auto !important;
+    }
+
+    .nav-menu.active {
+        transform: translateX(0) !important;
+    }
+
+    /* Mobile nav items */
+    .nav-item {
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .nav-link {
+        display: block !important;
+        width: 100% !important;
+        padding: 1rem 1.5rem !important;
+        text-align: left !important;
+        color: var(--text-color) !important;
+        text-decoration: none !important;
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        border: none !important;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        background: #f8f9fa !important;
+        color: var(--primary-color) !important;
+    }
+
+    /* Mobile dropdown styling */
+    .dropdown {
+        position: relative !important;
+    }
+
+    .dropdown .dropdown-menu {
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #f8f9fa !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: none !important;
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block !important;
+    }
+
+    .dropdown-link {
+        padding: 0.8rem 3rem !important;
+        font-size: 1rem !important;
+        color: var(--text-color) !important;
+        background: transparent !important;
+        border-bottom: 1px solid #e9ecef !important;
+    }
+
+    .dropdown-link:hover {
+        background: #e9ecef !important;
+        color: var(--primary-color) !important;
+    }
+
+    /* Simple book now button */
+    .btn-book-nav {
+        margin: 1rem 2rem 0.5rem 2rem !important;
+        padding: 1rem 2rem !important;
+        background: var(--primary-color) !important;
+        color: var(--white) !important;
+        border-radius: 8px !important;
+        text-align: center !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: block !important;
+        width: calc(100% - 4rem) !important;
+        animation: none !important;
+    }
+
+    .btn-book-nav:hover {
+        background: var(--hover-color) !important;
+    }
+
+    /* Hide backdrop for right-side menu */
+    .nav-backdrop {
+        display: none !important;
+    }
+
+    /* Ensure mobile toggle works */
+    .nav-toggle {
+        display: flex !important;
+        z-index: 10000 !important;
+    }
+}
+
+/* ===== 16. Policy Page Styles ===== */
+
+/* Policy Hero Section */
+.policy-hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    color: var(--white);
+    padding: 120px 0 80px 0;
+    text-align: center;
+}
+
+.policy-hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.policy-hero-content p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Policy Content Section */
+.policy-content {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.policy-sections {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.policy-section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.policy-section.highlighted {
+    border-left: 5px solid var(--primary-color);
+    background: linear-gradient(135deg, #f8f9ff 0%, var(--white) 100%);
+}
+
+.policy-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.policy-section h2 i {
+    font-size: 1.5rem;
+}
+
+.policy-item {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.policy-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.policy-item h3 {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.policy-item p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.policy-item ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.policy-item ul li {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.policy-item ul li strong {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* Mobile Responsiveness for Policy Page */
+@media screen and (max-width: 768px) {
+    .policy-hero {
+        padding: 100px 0 60px 0;
+    }
+    
+    .policy-hero-content h1 {
+        font-size: 2.2rem;
+    }
+    
+    .policy-hero-content p {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+    
+    .policy-content {
+        padding: 60px 0;
+    }
+    
+    .policy-section {
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .policy-section h2 {
+        font-size: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.3rem;
+    }
+    
+    .policy-item h3 {
+        font-size: 1.2rem;
+    }
+    
+    .policy-item p {
+        font-size: 0.95rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .policy-section {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .policy-hero-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .policy-hero-content p {
+        font-size: 1rem;
+    }
+    
+    .policy-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .policy-item h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* ===== 17. Process Slider Styles ===== */
+
+/* Process Slider Container */
+.process-slider-container {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.process-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    background: var(--white);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    height: 320px;
+    display: flex;
+    align-items: center;
+}
+
+.process-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9ff 0%, var(--white) 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease-in-out;
+}
+
+.process-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.process-slide.prev {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.process-slide.next {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.process-slide .process-step {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.process-slide .step-number {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+.process-slide h4 {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.process-slide p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Slider Navigation */
+.slider-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.slider-btn {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+.slider-btn:hover {
+    background: var(--hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+}
+
+.slider-btn:active {
+    transform: translateY(0);
+}
+
+/* Slider Dots */
+.slider-dots {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.dot.active,
+.dot:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Mobile Responsiveness for Process Slider */
+@media screen and (max-width: 768px) {
+    .process-slider-container {
+        padding: 1.5rem 0;
+        max-width: 95%;
+    }
+    
+    .process-slider {
+        height: 280px;
+    }
+    
+    .process-slide {
+        padding: 2rem 1.5rem;
+    }
+    
+    .process-slide .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .process-slide h4 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .process-slide p {
+        font-size: 1rem;
+    }
+    
+    .slider-navigation {
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .slider-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .dot {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .process-slider {
+        height: 250px;
+    }
+    
+    .process-slide {
+        padding: 1.5rem 1rem;
+    }
+    
+    .process-slide .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    .process-slide h4 {
+        font-size: 1.3rem;
+    }
+    
+    .process-slide p {
+        font-size: 0.95rem;
+    }
+    
+    .slider-navigation {
+        gap: 1rem;
+    }
+    
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .dot {
+        width: 12px;
+        height: 12px;
     }
 }

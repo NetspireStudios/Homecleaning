@@ -756,6 +756,114 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hero Video Background - No additional JavaScript needed
     // Video will auto-play due to HTML attributes
 
+    // Process Slider Functionality
+    let currentSlideIndex = 0;
+    const processSlides = document.querySelectorAll('.process-slide');
+    const processDots = document.querySelectorAll('.slider-dots .dot');
+    let isTransitioning = false;
+    
+    // Initialize slider
+    function initProcessSlider() {
+        if (processSlides.length > 0) {
+            // Reset all slides
+            processSlides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev', 'next');
+                if (index === 0) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.add('next');
+                }
+            });
+            
+            // Set first dot as active
+            if (processDots.length > 0) {
+                processDots.forEach(dot => dot.classList.remove('active'));
+                processDots[0].classList.add('active');
+            }
+            
+            currentSlideIndex = 0;
+        }
+    }
+    
+    // Show specific slide
+    function showSlide(index) {
+        if (isTransitioning || !processSlides[index]) return;
+        
+        isTransitioning = true;
+        
+        // Remove all classes from all slides
+        processSlides.forEach(slide => {
+            slide.classList.remove('active', 'prev', 'next');
+        });
+        
+        // Set up slides based on the target index
+        processSlides.forEach((slide, i) => {
+            if (i === index) {
+                slide.classList.add('active');
+            } else if (i < index) {
+                slide.classList.add('prev');
+            } else {
+                slide.classList.add('next');
+            }
+        });
+        
+        // Update dots
+        processDots.forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        if (processDots[index]) {
+            processDots[index].classList.add('active');
+        }
+        
+        currentSlideIndex = index;
+        
+        // Reset transition flag after animation completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500);
+    }
+    
+    // Move slide function (for navigation buttons)
+    window.moveSlide = function(direction) {
+        const newIndex = currentSlideIndex + direction;
+        
+        if (newIndex >= 0 && newIndex < processSlides.length) {
+            showSlide(newIndex);
+        } else if (newIndex < 0) {
+            showSlide(processSlides.length - 1); // Go to last slide
+        } else {
+            showSlide(0); // Go to first slide
+        }
+    };
+    
+    // Current slide function (for dots)
+    window.currentSlide = function(index) {
+        showSlide(index - 1); // Convert to 0-based index
+    };
+    
+    // Auto-advance slider every 5 seconds
+    function autoAdvanceSlider() {
+        if (processSlides.length > 1) {
+            setInterval(() => {
+                moveSlide(1);
+            }, 5000);
+        }
+    }
+    
+    // Initialize the slider
+    initProcessSlider();
+    
+    // Start auto-advance after a delay
+    setTimeout(autoAdvanceSlider, 3000);
+    
+    // Pause auto-advance on hover (optional enhancement)
+    const sliderContainer = document.querySelector('.process-slider-container');
+    if (sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', () => {
+            // You can add pause functionality here if needed
+        });
+    }
 
 });
 
